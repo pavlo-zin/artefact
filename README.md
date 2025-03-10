@@ -1,3 +1,5 @@
+<img width=700 src="https://github.com/uptechteam/artefact/blob/main/screenshots/screenshot_overview.png">
+
 # Artefact
 
 ![coverage][coverage_badge]
