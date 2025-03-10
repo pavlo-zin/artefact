@@ -1,0 +1,14 @@
+{
+    "@@locale": "en",
+    "appName": "Artéfact",
+    "homeLabel": "Home",
+    "featuredTitle": "FEATURED",
+    "browseAllTitle": "BROWSE ALL",
+    "quotesLabel": "Quote",
+    "actionBack": "Back",
+    "artefactId": "ARTÉFACT {id}",
+    "epoch": "Epoch",
+    "valuation": "Valuation",
+    "geography": "Geography",
+    "artefactType": "Artéfact Type"
+}
