@@ -10,14 +10,14 @@ dependencies:
   animations: ^2.0.11
   artefact_ui:
     path: packages/artefact_ui
-  bloc: ^8.1.4
+  bloc: ^9.0.0
   cached_network_image: ^3.4.1
   collection: ^1.19.1
   flutter:
     sdk: flutter
   flutter_adaptive_scaffold: ^0.3.2
   flutter_animate: ^4.5.2
-  flutter_bloc: ^8.1.6
+  flutter_bloc: ^9.1.0
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.17
@@ -33,7 +33,7 @@ dependencies:
   model_viewer_plus: ^1.9.1
 
 dev_dependencies:
-  bloc_test: ^9.1.7
+  bloc_test: ^10.0.0
   build_runner: ^2.4.15
   flutter_gen_runner: ^5.10.0
   flutter_launcher_icons: "^0.14.3"
