@@ -27,7 +27,7 @@ class ArtefactNavigationRail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints:
-          const BoxConstraints(maxWidth: 80, maxHeight: 500, minHeight: 500),
+          const BoxConstraints(maxWidth: 80, maxHeight: 510, minHeight: 510),
       child: Center(
         child: GlassContainer.clearGlass(
           borderColor: Colors.black12,

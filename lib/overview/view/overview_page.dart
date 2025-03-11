@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:animations/animations.dart';
@@ -47,25 +48,7 @@ class _OverviewPageState extends State<OverviewPage> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: isSmall ? 20 : 150),
-                child: Row(
-                  children: [
-                    Assets.icons.logo.svg(
-                      width: 48,
-                      height: 48,
-                      colorFilter: ColorFilter.mode(
-                        Theme.of(context).colorScheme.onSurface,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    Text(
-                      l10n.appName,
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                  ],
-                ),
+                child: const _Logo(),
               ),
             ),
             SliverGap(isSmall ? 36 : 100),
@@ -193,6 +176,35 @@ class _OverviewPageState extends State<OverviewPage> {
   }
 }
 
+class _Logo extends StatelessWidget {
+  const _Logo();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Assets.icons.logo.svg(
+          width: 48,
+          height: 48,
+          colorFilter: ColorFilter.mode(
+            Theme.of(context).colorScheme.onSurface,
+            BlendMode.srcIn,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            context.l10n.appName,
+            style: Theme.of(context).textTheme.displayLarge!.copyWith(
+              fontWeight: FontWeight.w700,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class ArtefactCard extends StatelessWidget {
   const ArtefactCard({required this.posterUrl, super.key});
 
@@ -205,6 +217,7 @@ class ArtefactCard extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: Tilt(
+        disable: _isTestEnv,
         tiltConfig: const TiltConfig(enableGestureTouch: false),
         shadowConfig: const ShadowConfig(disable: true),
         borderRadius: BorderRadius.circular(20),
@@ -237,3 +250,6 @@ class _CustomScrollBehavior extends MaterialScrollBehavior {
     PointerDeviceKind.trackpad,
   };
 }
+
+bool get _isTestEnv =>
+    kIsWeb == false && Platform.environment.containsKey('FLUTTER_TEST');
