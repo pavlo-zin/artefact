@@ -20,7 +20,7 @@ dependencies:
   flutter_bloc: ^9.1.0
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^2.0.17
+  flutter_svg: ^2.1.0
   flutter_tilt: ^3.2.1
   gap: ^3.0.1
   get_it: ^8.0.3
