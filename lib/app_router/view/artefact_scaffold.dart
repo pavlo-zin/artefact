@@ -45,21 +45,21 @@ class ArtefactScaffoldView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: LayoutBuilder(
-        builder:
-            (context, constraints) => Stack(
-              children: [
-                SafeArea(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Stack(
-                          children: [
-                            if (isDarkMode)
-                              const DarkBackground()
-                            else
-                              const LightBackground(),
-                            PageTransitionSwitcher(
-                              transitionBuilder: (
+        builder: (context, constraints) => Stack(
+          children: [
+            SafeArea(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        if (isDarkMode)
+                          const DarkBackground()
+                        else
+                          const LightBackground(),
+                        PageTransitionSwitcher(
+                          transitionBuilder:
+                              (
                                 Widget child,
                                 Animation<double> animation,
                                 Animation<double> secondaryAnimation,
@@ -71,48 +71,47 @@ class ArtefactScaffoldView extends StatelessWidget {
                                   child: child,
                                 );
                               },
-                              child: children[navigationShell.currentIndex],
-                            ),
-                            if (layout != ArtefactLayoutData.small)
-                              Align(
-                                alignment: AlignmentDirectional.centerStart,
-                                child: ArtefactNavigationRail(
-                                  destinations: destinations,
-                                  selectedIndex: navigationShell.currentIndex,
-                                  onDestinationSelected: (index) {
-                                    navigationShell.goBranch(
-                                      index,
-                                      initialLocation:
-                                          index == navigationShell.currentIndex,
-                                    );
-                                  },
-                                  trailing: const ThemeToggleButton(),
-                                ),
-                              ),
-                          ],
+                          child: children[navigationShell.currentIndex],
                         ),
-                      ),
-                    ],
+                        if (layout != ArtefactLayoutData.small)
+                          Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: ArtefactNavigationRail(
+                              destinations: destinations,
+                              selectedIndex: navigationShell.currentIndex,
+                              onDestinationSelected: (index) {
+                                navigationShell.goBranch(
+                                  index,
+                                  initialLocation:
+                                      index == navigationShell.currentIndex,
+                                );
+                              },
+                              trailing: const ThemeToggleButton(),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+          ],
+        ),
       ),
       extendBody: true,
       extendBodyBehindAppBar: true,
-      bottomNavigationBar:
-          (layout == ArtefactLayoutData.small)
-              ? ArtefactBottomNavigationBar(
-                destinations: destinations,
-                selectedIndex: navigationShell.currentIndex,
-                onDestinationSelected: (index) {
-                  navigationShell.goBranch(
-                    index,
-                    initialLocation: index == navigationShell.currentIndex,
-                  );
-                },
-              )
-              : null,
+      bottomNavigationBar: (layout == ArtefactLayoutData.small)
+          ? ArtefactBottomNavigationBar(
+              destinations: destinations,
+              selectedIndex: navigationShell.currentIndex,
+              onDestinationSelected: (index) {
+                navigationShell.goBranch(
+                  index,
+                  initialLocation: index == navigationShell.currentIndex,
+                );
+              },
+            )
+          : null,
     );
   }
 }

@@ -49,10 +49,9 @@ class ArtefactDetailsPage extends StatelessWidget {
                   onPressed: () => context.pop(),
                 ),
               ),
-              body:
-                  isSmall
-                      ? _SmallLayout(artefactInfo)
-                      : _LargeLayout(artefactInfo),
+              body: isSmall
+                  ? _SmallLayout(artefactInfo)
+                  : _LargeLayout(artefactInfo),
             );
           },
         ),

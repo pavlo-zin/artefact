@@ -26,10 +26,9 @@ class ThemeToggleButton extends StatelessWidget {
                 switchInCurve: Curves.easeOutSine,
                 switchOutCurve: Curves.easeInSine,
                 transitionBuilder: (child, animation) {
-                  final beginOffset =
-                      child.key == const Key('dark')
-                          ? const Offset(0, -1)
-                          : const Offset(0, 1);
+                  final beginOffset = child.key == const Key('dark')
+                      ? const Offset(0, -1)
+                      : const Offset(0, 1);
 
                   final offsetAnimation = Tween<Offset>(
                     begin: beginOffset,
@@ -41,13 +40,12 @@ class ThemeToggleButton extends StatelessWidget {
                     child: child,
                   );
                 },
-                child:
-                    isLightTheme
-                        ? const Icon(Icons.dark_mode_outlined, key: Key('dark'))
-                        : const Icon(
-                          Icons.light_mode_outlined,
-                          key: Key('light'),
-                        ),
+                child: isLightTheme
+                    ? const Icon(Icons.dark_mode_outlined, key: Key('dark'))
+                    : const Icon(
+                        Icons.light_mode_outlined,
+                        key: Key('light'),
+                      ),
               ),
             ),
           ),
