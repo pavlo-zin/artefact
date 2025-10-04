@@ -51,7 +51,7 @@ class OverviewPageBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class OverviewPageRouteData extends GoRouteData {
+class OverviewPageRouteData extends GoRouteData with $OverviewPageRouteData {
   const OverviewPageRouteData();
 
   @override
@@ -65,7 +65,8 @@ class MusicPageBranchData extends StatefulShellBranchData {
 }
 
 @immutable
-class MusicPlayerPageRouteData extends GoRouteData {
+class MusicPlayerPageRouteData extends GoRouteData
+    with $MusicPlayerPageRouteData {
   const MusicPlayerPageRouteData();
 
   @override
@@ -80,8 +81,9 @@ class MusicPlayerPageRouteData extends GoRouteData {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Text(
+            // Intentionally long quote text for visual impact
             // ignore: lines_longer_than_80_chars
-            'Every memory is an artefact—a relic of time that whispers the eternal tales of our soul’s journey.',
+            "Every memory is an artefact—a relic of time that whispers the eternal tales of our soul's journey.",
             style: Theme.of(context).textTheme.displaySmall,
           ),
         ),

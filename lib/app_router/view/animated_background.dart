@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mesh/mesh.dart';
 
@@ -22,9 +24,9 @@ class _AnimatedMeshBackgroundState extends State<AnimatedMeshBackground>
         ..addListener(() {
           // Reverse the animation when reaching the bounds.
           if (_controller.value == 1.0) {
-            _controller.animateTo(0, curve: Easing.standard);
+            unawaited(_controller.animateTo(0, curve: Easing.standard));
           } else if (_controller.value == 0.0) {
-            _controller.animateTo(1, curve: Easing.standard);
+            unawaited(_controller.animateTo(1, curve: Easing.standard));
           }
         });
 

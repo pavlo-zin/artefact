@@ -24,13 +24,12 @@ class OverviewPage extends StatefulWidget {
 class _OverviewPageState extends State<OverviewPage> {
   final CarouselController controller = CarouselController();
 
-  final allArtefacts = demoArtefacts.shuffled();
-  final featuredArtefacts =
-      featuredIds
-          .map(
-            (id) => demoArtefacts.firstWhere((artefact) => artefact.id == id),
-          )
-          .toList();
+  final List<Artefact> allArtefacts = demoArtefacts.shuffled();
+  final List<Artefact> featuredArtefacts = featuredIds
+      .map(
+        (id) => demoArtefacts.firstWhere((artefact) => artefact.id == id),
+      )
+      .toList();
 
   @override
   Widget build(BuildContext context) {
@@ -76,38 +75,36 @@ class _OverviewPageState extends State<OverviewPage> {
                       itemSnapping: true,
                       enableSplash: false,
                       backgroundColor: Colors.transparent,
-                      flexWeights:
-                          isSmall ? const [4, 3, 2] : const [4, 3, 2, 1],
-                      children:
-                          featuredArtefacts.map((artefactInfo) {
-                            return RepaintBoundary(
-                              child: OpenContainer(
-                                useRootNavigator: true,
-                                openColor: Colors.transparent,
-                                closedColor: Colors.transparent,
-                                closedElevation: 0,
-                                openElevation: 0,
-                                closedShape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20),
-                                  ),
-                                ),
-                                openShape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20),
-                                  ),
-                                ),
-                                closedBuilder:
-                                    (_, __) => ArtefactCard(
-                                      posterUrl: artefactInfo.posterUrl,
-                                    ),
-                                openBuilder:
-                                    (_, __) => ArtefactDetailsPage(
-                                      artefactInfo: artefactInfo,
-                                    ),
+                      flexWeights: isSmall
+                          ? const [4, 3, 2]
+                          : const [4, 3, 2, 1],
+                      children: featuredArtefacts.map((artefactInfo) {
+                        return RepaintBoundary(
+                          child: OpenContainer(
+                            useRootNavigator: true,
+                            openColor: Colors.transparent,
+                            closedColor: Colors.transparent,
+                            closedElevation: 0,
+                            openElevation: 0,
+                            closedShape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
                               ),
-                            );
-                          }).toList(),
+                            ),
+                            openShape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                            ),
+                            closedBuilder: (_, _) => ArtefactCard(
+                              posterUrl: artefactInfo.posterUrl,
+                            ),
+                            openBuilder: (_, _) => ArtefactDetailsPage(
+                              artefactInfo: artefactInfo,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),
@@ -125,14 +122,13 @@ class _OverviewPageState extends State<OverviewPage> {
             ),
             const SliverGap(20),
             SliverPadding(
-              padding:
-                  isSmall
-                      ? const EdgeInsets.only(top: 20)
-                      : const EdgeInsets.only(
-                        left: 150,
-                        right: 150,
-                        bottom: 150,
-                      ),
+              padding: isSmall
+                  ? const EdgeInsets.only(top: 20)
+                  : const EdgeInsets.only(
+                      left: 150,
+                      right: 150,
+                      bottom: 150,
+                    ),
               sliver: SliverGrid(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: switch (layout) {
@@ -158,14 +154,11 @@ class _OverviewPageState extends State<OverviewPage> {
                     openShape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
-                    closedBuilder:
-                        (_, __) =>
-                            ArtefactCard(posterUrl: artefactInfo.posterUrl),
-                    openBuilder:
-                        (_, __) =>
-                            ArtefactDetailsPage(artefactInfo: artefactInfo),
+                    closedBuilder: (_, _) =>
+                        ArtefactCard(posterUrl: artefactInfo.posterUrl),
+                    openBuilder: (_, _) =>
+                        ArtefactDetailsPage(artefactInfo: artefactInfo),
                   );
-                  // ignore: require_trailing_commas
                 }, childCount: allArtefacts.length),
               ),
             ),
@@ -252,4 +245,4 @@ class _CustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 bool get _isTestEnv =>
-    kIsWeb == false && Platform.environment.containsKey('FLUTTER_TEST');
+    !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');

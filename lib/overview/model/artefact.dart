@@ -1,3 +1,4 @@
+// Artefact descriptions are intentionally detailed and exceed 80 chars
 // ignore_for_file: lines_longer_than_80_chars
 
 const _baseUrl =
