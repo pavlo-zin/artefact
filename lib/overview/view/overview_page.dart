@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
@@ -30,6 +31,68 @@ class _OverviewPageState extends State<OverviewPage> {
         (id) => demoArtefacts.firstWhere((artefact) => artefact.id == id),
       )
       .toList();
+
+  Timer? _autoPlayTimer;
+  int _currentIndex = 0;
+  bool _isHovering = false;
+  bool _userInteracted = false;
+
+  // Autoplay configuration
+  static const Duration _autoPlayInterval = Duration(seconds: 5);
+  static const Duration _animationDuration = Duration(milliseconds: 800);
+  static const Curve _animationCurve = Curves.easeInOutCubic;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoPlay();
+  }
+
+  @override
+  void dispose() {
+    _autoPlayTimer?.cancel();
+    super.dispose();
+  }
+
+  void _startAutoPlay() {
+    _autoPlayTimer?.cancel();
+    _autoPlayTimer = Timer.periodic(_autoPlayInterval, (_) async {
+      if (!_isHovering && !_userInteracted && mounted) {
+        await _advanceCarousel();
+      }
+    });
+  }
+
+  void _stopAutoPlay() {
+    _autoPlayTimer?.cancel();
+  }
+
+  void _resetAutoPlay() {
+    _userInteracted = false;
+    _startAutoPlay();
+  }
+
+  Future<void> _advanceCarousel() async {
+    if (!controller.hasClients) return;
+
+    _currentIndex = (_currentIndex + 1) % featuredArtefacts.length;
+    await controller.animateToItem(
+      _currentIndex,
+      duration: _animationDuration,
+      curve: _animationCurve,
+    );
+  }
+
+  void _onUserInteraction() {
+    _userInteracted = true;
+    _stopAutoPlay();
+    // Resume autoplay after 10 seconds of no interaction
+    Future.delayed(const Duration(seconds: 10), () {
+      if (mounted) {
+        _resetAutoPlay();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,43 +131,54 @@ class _OverviewPageState extends State<OverviewPage> {
                   constraints: BoxConstraints(
                     maxHeight: height / (isSmall ? 2.5 : 2),
                   ),
-                  child: ScrollConfiguration(
-                    behavior: _CustomScrollBehavior(),
-                    child: CarouselView.weighted(
-                      controller: controller,
-                      itemSnapping: true,
-                      enableSplash: false,
-                      backgroundColor: Colors.transparent,
-                      flexWeights: isSmall
-                          ? const [4, 3, 2]
-                          : const [4, 3, 2, 1],
-                      children: featuredArtefacts.map((artefactInfo) {
-                        return RepaintBoundary(
-                          child: OpenContainer(
-                            useRootNavigator: true,
-                            openColor: Colors.transparent,
-                            closedColor: Colors.transparent,
-                            closedElevation: 0,
-                            openElevation: 0,
-                            closedShape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
+                  child: MouseRegion(
+                    onEnter: (_) {
+                      setState(() => _isHovering = true);
+                    },
+                    onExit: (_) {
+                      setState(() => _isHovering = false);
+                    },
+                    child: Listener(
+                      onPointerDown: (_) => _onUserInteraction(),
+                      child: ScrollConfiguration(
+                        behavior: _CustomScrollBehavior(),
+                        child: CarouselView.weighted(
+                          controller: controller,
+                          itemSnapping: true,
+                          enableSplash: false,
+                          backgroundColor: Colors.transparent,
+                          flexWeights: isSmall
+                              ? const [4, 3, 2]
+                              : const [4, 3, 2, 1],
+                          children: featuredArtefacts.map((artefactInfo) {
+                            return RepaintBoundary(
+                              child: OpenContainer(
+                                useRootNavigator: true,
+                                openColor: Colors.transparent,
+                                closedColor: Colors.transparent,
+                                closedElevation: 0,
+                                openElevation: 0,
+                                closedShape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
+                                ),
+                                openShape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
+                                ),
+                                closedBuilder: (_, _) => ArtefactCard(
+                                  posterUrl: artefactInfo.posterUrl,
+                                ),
+                                openBuilder: (_, _) => ArtefactDetailsPage(
+                                  artefactInfo: artefactInfo,
+                                ),
                               ),
-                            ),
-                            openShape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                            ),
-                            closedBuilder: (_, _) => ArtefactCard(
-                              posterUrl: artefactInfo.posterUrl,
-                            ),
-                            openBuilder: (_, _) => ArtefactDetailsPage(
-                              artefactInfo: artefactInfo,
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ),
                   ),
                 ),
